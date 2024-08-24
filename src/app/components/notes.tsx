@@ -3,13 +3,14 @@
 import { useState } from "react";
 
 export function Notes() {
-  const [notes, setNotes] = useState([]);
-  const [noteText, setNoteText] = useState("");
-  const [isEditing, setIsEditing] = useState(false);
-  const [currentEditIndex, setCurrentEditIndex] = useState(null);
-  const [editNoteText, setEditNoteText] = useState("");
+  const [notes, setNotes] = useState<string[]>([]); // Explicitly type as string array
+  const [noteText, setNoteText] = useState<string>(""); // Explicitly type as string
+  const [isEditing, setIsEditing] = useState<boolean>(false); // Explicitly type as boolean
+  const [currentEditIndex, setCurrentEditIndex] = useState<number | null>(null); // Explicitly type as number or null
+  const [editNoteText, setEditNoteText] = useState<string>(""); // Explicitly type as string
 
-  const addNote = (e) => {
+  const addNote = (e: React.FormEvent) => {
+    // Specify event type
     e.preventDefault();
     if (noteText.trim() === "") return;
 
@@ -17,11 +18,13 @@ export function Notes() {
     setNoteText("");
   };
 
-  const deleteNote = (index) => {
+  const deleteNote = (index: number) => {
+    // Specify index type
     setNotes(notes.filter((_, i) => i !== index));
   };
 
-  const startEditing = (index) => {
+  const startEditing = (index: number) => {
+    // Specify index type
     setIsEditing(true);
     setCurrentEditIndex(index);
     setEditNoteText(notes[index]);
@@ -33,7 +36,8 @@ export function Notes() {
     setEditNoteText("");
   };
 
-  const saveEdit = (e) => {
+  const saveEdit = (e: React.FormEvent) => {
+    // Specify event type
     e.preventDefault();
     if (editNoteText.trim() === "") return;
 
@@ -137,3 +141,4 @@ export function Notes() {
     </div>
   );
 }
+

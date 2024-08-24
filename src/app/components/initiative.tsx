@@ -2,13 +2,18 @@
 
 import { useState } from "react";
 
+type Character = {
+    name: string;
+    initiative: number;
+  };
+
 export function InitiativeTracker() {
-  const [characters, setCharacters] = useState([]);
+    const [characters, setCharacters] = useState<Character[]>([]);
   const [characterName, setCharacterName] = useState("");
   const [initiativeScore, setInitiativeScore] = useState("");
   const [currentTurnIndex, setCurrentTurnIndex] = useState(0);
 
-  const addCharacter = (e) => {
+  const addCharacter = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (characterName.trim() === "" || initiativeScore.trim() === "") return;
 
@@ -20,7 +25,7 @@ export function InitiativeTracker() {
     setInitiativeScore("");
   };
 
-  const deleteCharacter = (index) => {
+  const deleteCharacter = (index: number) => {
     setCharacters(characters.filter((_, i) => i !== index));
     if (currentTurnIndex >= index && currentTurnIndex > 0) {
       setCurrentTurnIndex((prevIndex) => prevIndex - 1);
@@ -127,3 +132,4 @@ export function InitiativeTracker() {
     </div>
   );
 }
+

@@ -1,17 +1,24 @@
-"use client"
+"use client";
 
 import { useState } from "react";
 
-export function Inventory() {
-  const [items, setItems] = useState([]);
-  const [itemName, setItemName] = useState("");
-  const [itemQuantity, setItemQuantity] = useState("");
-  const [isEditing, setIsEditing] = useState(false);
-  const [currentEditIndex, setCurrentEditIndex] = useState(null);
-  const [editItemName, setEditItemName] = useState("");
-  const [editItemQuantity, setEditItemQuantity] = useState("");
+// Define the type for inventory items
+interface InventoryItem {
+  name: string;
+  quantity: number;
+}
 
-  const addItem = (e) => {
+export function Inventory() {
+  // Define the type for the useState hooks
+  const [items, setItems] = useState<InventoryItem[]>([]);
+  const [itemName, setItemName] = useState<string>("");
+  const [itemQuantity, setItemQuantity] = useState<string>("");
+  const [isEditing, setIsEditing] = useState<boolean>(false);
+  const [currentEditIndex, setCurrentEditIndex] = useState<number | null>(null);
+  const [editItemName, setEditItemName] = useState<string>("");
+  const [editItemQuantity, setEditItemQuantity] = useState<string>("");
+
+  const addItem = (e: React.FormEvent) => {
     e.preventDefault();
     if (itemName.trim() === "" || itemQuantity.trim() === "") return;
 
@@ -20,11 +27,11 @@ export function Inventory() {
     setItemQuantity("");
   };
 
-  const deleteItem = (index) => {
+  const deleteItem = (index: number) => {
     setItems(items.filter((_, i) => i !== index));
   };
 
-  const startEditing = (index) => {
+  const startEditing = (index: number) => {
     setIsEditing(true);
     setCurrentEditIndex(index);
     setEditItemName(items[index].name);
@@ -38,7 +45,7 @@ export function Inventory() {
     setEditItemQuantity("");
   };
 
-  const saveEdit = (e) => {
+  const saveEdit = (e: React.FormEvent) => {
     e.preventDefault();
     if (editItemName.trim() === "" || editItemQuantity.trim() === "") return;
 
