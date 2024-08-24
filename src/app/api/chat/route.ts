@@ -1,26 +1,29 @@
-import OpenAI from 'openai';
-import { OpenAIStream, StreamingTextResponse } from 'ai';
+import { ChatOpenAI } from '@langchain/openai';
+import { LangChainAdapter, StreamData } from 'ai';
 
-export const dynamic = 'force-dynamic'
-
-const openai = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY!,
-});
+// Allow streaming responses up to 30 seconds
+export const maxDuration = 30;
 
 export async function POST(req: Request) {
-    // Extract the `messages` from the body of the request
-    const { messages } = await req.json();
+  const { prompt } = await req.json();
 
-    // Request the OpenAI API for the response based on the prompt
-    const response = await openai.chat.completions.create({
-        model: 'gpt-3.5-turbo',
-        stream: true,
-        messages: messages,
-    });
+  const model = new ChatOpenAI({
+    model: 'gpt-3.5-turbo-0125',
+    temperature: 0,
+  });
 
-    // Convert the response into a friendly text-stream
-    const stream = OpenAIStream(response);
+  const stream = await model.stream(prompt);
 
-    // Respond with the stream
-    return new StreamingTextResponse(stream);
+  const data = new StreamData();
+
+  data.append({ test: 'value' });
+
+  return LangChainAdapter.toDataStreamResponse(stream, {
+    data,
+    callbacks: {
+      onFinal() {
+        data.close();
+      },
+    },
+  });
 }
