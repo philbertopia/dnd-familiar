@@ -75,7 +75,7 @@ export function DiceRoller() {
             <p className="text-gray-700">Total: {total}</p>
           </div>
         ) : (
-          <p className="text-gray-500">No rolls yet. Click "Roll Dice" to start.</p>
+          <p className="text-gray-500">No rolls yet. Click &quot;Roll Dice&quot; to start.</p>
         )}
       </div>
     </div>

@@ -55,7 +55,7 @@ export function SpellSlotTracker() {
     }
   };
 
-  const useSlot = (level: number) => {
+  const castSpell = (level: number) => {
     const newUsedSlots = [...usedSlots];
     if (usedSlots[level - 1] < slots[level - 1]) {
       newUsedSlots[level - 1]++;
@@ -169,7 +169,7 @@ export function SpellSlotTracker() {
                 -1 Slot
               </button>
               <button
-                onClick={() => useSlot(index + 1)}
+                onClick={() => castSpell(index + 1)}
                 className="px-2 py-1 bg-purple-500 text-white rounded hover:bg-purple-600"
               >
                 Use Slot
