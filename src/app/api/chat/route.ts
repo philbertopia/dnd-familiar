@@ -1,10 +1,13 @@
+import { config } from 'dotenv';
 import OpenAI from 'openai';
 import { OpenAIStream, StreamingTextResponse } from 'ai';
+
+config(); // Load environment variables from .env
 
 export const dynamic = 'force-dynamic'
 
 const openai = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY!,
+    apiKey: process.env.OPENAI_API_KEY, // Access the API key from environment variable
 });
 
 export async function POST(req: Request) {
