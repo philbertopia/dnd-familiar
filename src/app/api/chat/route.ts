@@ -1,29 +1,23 @@
-import { config } from 'dotenv';
-import OpenAI from 'openai';
-import { OpenAIStream, StreamingTextResponse } from 'ai';
+import { openai } from '@ai-sdk/openai';
+import { convertToCoreMessages, streamText } from 'ai';
 
-config(); // Load environment variables from .env
-
-export const dynamic = 'force-dynamic'
-
-const openai = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY, // Access the API key from environment variable
-});
+// Allow streaming responses up to 30 seconds
+export const maxDuration = 30;
 
 export async function POST(req: Request) {
-    // Extract the `messages` from the body of the request
-    const { messages } = await req.json();
+  // Extract the `messages` from the body of the request
+  const { messages } = await req.json();
 
-    // Request the OpenAI API for the response based on the prompt
-    const response = await openai.chat.completions.create({
-        model: 'gpt-3.5-turbo',
-        stream: true,
-        messages: messages,
-    });
+  // Call the language model
+  const result = await streamText({
+    model: openai('gpt-4o'),
+    messages: convertToCoreMessages(messages),
+    async onFinish({ text, toolCalls, toolResults, usage, finishReason }) {
+      // implement your own logic here, e.g. for storing messages
+      // or recording token usage
+    },
+  });
 
-    // Convert the response into a friendly text-stream
-    const stream = OpenAIStream(response);
-
-    // Respond with the stream
-    return new StreamingTextResponse(stream);
+  // Respond with the stream
+  return result.toDataStreamResponse();
 }
