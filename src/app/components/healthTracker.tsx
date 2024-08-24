@@ -3,39 +3,46 @@
 import { useState } from "react";
 
 export function HealthTracker() {
-  const [characters, setCharacters] = useState([]);
-  const [characterName, setCharacterName] = useState("");
-  const [maxHealth, setMaxHealth] = useState("");
-  const [currentHealth, setCurrentHealth] = useState("");
+  const [characters, setCharacters] = useState<
+    { name: string; maxHealth: number; currentHealth: number }[]
+  >([]);
+  const [characterName, setCharacterName] = useState<string>("");
+  const [maxHealth, setMaxHealth] = useState<string>("");
 
-  const addCharacter = (e) => {
+  const addCharacter = (e: React.FormEvent) => {
     e.preventDefault();
     if (
       characterName.trim() === "" ||
       maxHealth.trim() === "" ||
-      isNaN(maxHealth) ||
-      maxHealth <= 0
+      isNaN(Number(maxHealth)) ||
+      Number(maxHealth) <= 0
     ) {
       return;
     }
 
     setCharacters([
       ...characters,
-      { name: characterName, maxHealth: parseInt(maxHealth), currentHealth: parseInt(maxHealth) },
+      {
+        name: characterName,
+        maxHealth: parseInt(maxHealth),
+        currentHealth: parseInt(maxHealth),
+      },
     ]);
     setCharacterName("");
     setMaxHealth("");
-    setCurrentHealth("");
   };
 
-  const updateHealth = (index, change) => {
+  const updateHealth = (index: number, change: number) => {
     const updatedCharacters = [...characters];
-    const newHealth = Math.max(0, updatedCharacters[index].currentHealth + change);
+    const newHealth = Math.max(
+      0,
+      updatedCharacters[index].currentHealth + change
+    );
     updatedCharacters[index].currentHealth = newHealth;
     setCharacters(updatedCharacters);
   };
 
-  const deleteCharacter = (index) => {
+  const deleteCharacter = (index: number) => {
     setCharacters(characters.filter((_, i) => i !== index));
   };
 
@@ -124,3 +131,4 @@ export function HealthTracker() {
     </div>
   );
 }
+
