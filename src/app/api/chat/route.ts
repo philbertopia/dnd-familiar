@@ -11,6 +11,11 @@ export async function POST(req: Request) {
         // Extract the `messages` from the body of the request
         const { messages } = await req.json();
 
+        // Validate that messages are provided
+        if (!Array.isArray(messages) || messages.length === 0) {
+            return new Response("No messages provided", { status: 400 });
+        }
+
         // Request the OpenAI API for the response based on the prompt
         const response = await openai.chat.completions.create({
             model: 'gpt-3.5-turbo',
