@@ -1,15 +1,15 @@
-"use client";
+'use client'
 
 import { useState } from "react";
 
 export function DiceRoller() {
   const [diceType, setDiceType] = useState(6); // Default to a 6-sided die
   const [numberOfDice, setNumberOfDice] = useState(1);
-  const [rollResults, setRollResults] = useState([]);
+  const [rollResults, setRollResults] = useState<number[]>([]); // Explicitly define the type as an array of numbers
   const [total, setTotal] = useState(0);
 
   const rollDice = () => {
-    const results = [];
+    const results: number[] = [];
     let sum = 0;
 
     for (let i = 0; i < numberOfDice; i++) {
@@ -18,7 +18,7 @@ export function DiceRoller() {
       sum += roll;
     }
 
-    setRollResults(results);
+    setRollResults(results); // No more type error here
     setTotal(sum);
   };
 
