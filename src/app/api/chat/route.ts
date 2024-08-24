@@ -27,6 +27,7 @@ export async function POST(req: Request) {
                     }
                     controller.close();
                 } catch (error) {
+                    console.error("Error while streaming response:", error);
                     controller.error(error);
                 }
             },
