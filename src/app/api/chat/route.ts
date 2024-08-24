@@ -8,12 +8,15 @@ export async function POST(req: Request) {
   // Extract the `messages` from the body of the request
   const { messages } = await req.json();
 
-  // Call the language model
+  // Convert messages to the required format
+  const coreMessages = convertToCoreMessages(messages);
+
+  // Call the language model with streaming enabled
   const result = await streamText({
-    model: openai('gpt-4o'),
-    messages: convertToCoreMessages(messages),
+    model: openai('gpt-4o'), // Replace with your desired model ID
+    messages: coreMessages,
     async onFinish({ text, toolCalls, toolResults, usage, finishReason }) {
-      // implement your own logic here, e.g. for storing messages
+      // Implement your own logic here, e.g. for storing messages
       // or recording token usage
     },
   });
